@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>AR.js Basic Projected Camera Example</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <!-- Look-at component. We don't need this now, but we will later. -->
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+  </head>
+  <body>
+    <!-- Location Based Start  -->
+    <a-scene
+      vr-mode-ui="enabled: false"
+      embedded
+      arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
+    >
+      <a-camera gps-projected-camera rotation-reader></a-camera>
+      <a-box
+        color="yellow"
+        gps-projected-entity-place="latitude: 0; longitude: 0"
+        position="0 30 0"
+      />
+    </a-scene>
+    <!-- Location Based End  -->
+
+    <script>
+      // Location Based Start
+      let userLocation;
+      navigator.geolocation.getCurrentPosition((position) => {
+        userLocation = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+      });
+      const box = document.querySelector("a-box");
+
+      window.onload = () => {
+        box.setAttribute("gps-projected-entity-place", userLocation);
+        console.log(box.getAttribute("gps-projected-entity-place"));
+      };
+    </script>
+  </body>
+</html>
